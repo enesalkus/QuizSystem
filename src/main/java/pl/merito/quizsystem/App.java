@@ -1,5 +1,9 @@
 package pl.merito.quizsystem;
 
+import pl.merito.quizsystem.interfaces.IAnswer;
+import pl.merito.quizsystem.model.Answer;
+import pl.merito.quizsystem.model.Question;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -7,7 +11,7 @@ import java.util.Scanner;
 public class App
 {
     public static void main(String[] args) {
-        List<Answer> answers = new ArrayList<Answer>();
+        List<IAnswer> answers = new ArrayList<IAnswer>();
 
         answers.add(new Answer("Tarantino", false));
         answers.add(new Answer("Nolan", true));

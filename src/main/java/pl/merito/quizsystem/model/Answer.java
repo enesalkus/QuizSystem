@@ -1,7 +1,9 @@
-package pl.merito.quizsystem;
+package pl.merito.quizsystem.model;
 
 
-public class Answer {
+import pl.merito.quizsystem.interfaces.IAnswer;
+
+public class Answer implements IAnswer {
     private String text;
     private boolean isCorrect;
 
