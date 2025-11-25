@@ -22,6 +22,10 @@ public class Question implements IQuestion {
         return answers;
     }
 
+    public void addAnswer(IAnswer answer) {
+        this.answers.add(answer);
+    }
+
     public boolean checkAnswer(String userAnswer) {
         for (IAnswer answer : answers) {
             if (answer.getText().equalsIgnoreCase(userAnswer) && answer.isCorrect())

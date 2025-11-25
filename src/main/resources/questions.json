@@ -1,0 +1,21 @@
+{
+  "questions": [
+    {
+      "text": "Which of these are programming languages?",
+      "answers": [
+        { "text": "Java", "correct": true },
+        { "text": "Python", "correct": true },
+        { "text": "Turkish", "correct": false },
+        { "text": "Polish", "correct": false }
+      ]
+    },
+    {
+      "text": "Capital of France?",
+      "answers": [
+        { "text": "Paris", "correct": true },
+        { "text": "Lyon", "correct": false },
+        { "text": "Ankara", "correct": false }
+      ]
+    }
+  ]
+}
