@@ -43,7 +43,6 @@ public class App extends Application {
     private ProgressBar progressBar;
     private Label progressLabel;
 
-    // Track user answers: Question -> List of selected Answers
     private Map<Question, List<Answer>> userAnswers = new HashMap<>();
 
     public App() {
@@ -62,7 +61,6 @@ public class App extends Application {
         BorderPane root = new BorderPane();
         root.setPadding(new Insets(20));
 
-        // Center content
         VBox centerBox = new VBox(20);
         centerBox.setAlignment(Pos.CENTER);
 
@@ -79,7 +77,6 @@ public class App extends Application {
         centerBox.getChildren().addAll(titleLabel, messageLabel, startButton);
         root.setCenter(centerBox);
 
-        // Footer
         Label footerLabel = new Label("Created by Ayet Enes Alkus");
         footerLabel.setFont(Font.font("Arial", 10));
         BorderPane.setAlignment(footerLabel, Pos.CENTER);
@@ -92,34 +89,29 @@ public class App extends Application {
     private void startQuiz() {
         questions = quizService.loadQuestions();
         currentQuestionIndex = 0;
-        userAnswers.clear(); // Reset answers
+        userAnswers.clear();
 
         quizRoot = new BorderPane();
-        // Remove padding from root to allow MenuBar to span full width
-        // We will add padding to the center content instead
 
-        // Top: MenuBar
         MenuBar menuBar = new MenuBar();
         Menu menu = new Menu("Menu");
         MenuItem exitItem = new MenuItem("Exit");
-        exitItem.setOnAction(e -> showWelcomeScreen()); // Abort quiz and return to main menu
+        exitItem.setOnAction(e -> showWelcomeScreen());
         menu.getItems().add(exitItem);
         menuBar.getMenus().add(menu);
         quizRoot.setTop(menuBar);
 
-        // Center: Question + Answers + Buttons
-        VBox centerContent = new VBox(20); // Spacing between elements
-        centerContent.setPadding(new Insets(20)); // Padding for the content
+        VBox centerContent = new VBox(20);
+        centerContent.setPadding(new Insets(20));
         centerContent.setAlignment(Pos.TOP_LEFT);
 
         questionLabel = new Label();
         questionLabel.setWrapText(true);
-        questionLabel.setFont(Font.font("Arial", 18)); // Increased font size
+        questionLabel.setFont(Font.font("Arial", 18));
 
         answersBox = new VBox(10);
 
-        // Buttons
-        HBox buttonBox = new HBox(20); // Spacing between buttons
+        HBox buttonBox = new HBox(20);
         buttonBox.setAlignment(Pos.CENTER_LEFT);
 
         backButton = new Button("Back");
@@ -133,9 +125,8 @@ public class App extends Application {
         centerContent.getChildren().addAll(questionLabel, answersBox, buttonBox);
         quizRoot.setCenter(centerContent);
 
-        // Bottom: Progress Bar with Label
         progressBar = new ProgressBar(0);
-        progressBar.setPrefWidth(560); // Slightly less than scene width
+        progressBar.setPrefWidth(560);
 
         progressLabel = new Label("0%");
         progressLabel.setFont(Font.font("Arial", FontWeight.BOLD, 12));
@@ -145,7 +136,7 @@ public class App extends Application {
 
         VBox bottomBox = new VBox(progressPane);
         bottomBox.setAlignment(Pos.CENTER);
-        bottomBox.setPadding(new Insets(0, 0, 10, 0)); // 10px from bottom
+        bottomBox.setPadding(new Insets(0, 0, 10, 0));
         quizRoot.setBottom(bottomBox);
 
         if (!questions.isEmpty()) {
@@ -171,17 +162,15 @@ public class App extends Application {
             List<Answer> selectedAnswers = userAnswers.getOrDefault(q, new ArrayList<>());
 
             if (correctCount > 1) {
-                // Multiple choice - use CheckBox
+                // Multiple choice
                 for (Answer answer : q.getAnswers()) {
                     javafx.scene.control.CheckBox cb = new javafx.scene.control.CheckBox(answer.getText());
                     cb.setFont(Font.font("Arial", 14));
 
-                    // Restore selection
                     if (selectedAnswers.contains(answer)) {
                         cb.setSelected(true);
                     }
 
-                    // Listener to update userAnswers
                     cb.selectedProperty().addListener((obs, wasSelected, isSelected) -> {
                         List<Answer> currentSelection = userAnswers.getOrDefault(q, new ArrayList<>());
                         if (isSelected) {
@@ -197,19 +186,17 @@ public class App extends Application {
                     answersBox.getChildren().add(cb);
                 }
             } else {
-                // Single choice - use RadioButton
+                // Single choice
                 ToggleGroup group = new ToggleGroup();
                 for (Answer answer : q.getAnswers()) {
                     RadioButton rb = new RadioButton(answer.getText());
                     rb.setFont(Font.font("Arial", 14));
                     rb.setToggleGroup(group);
 
-                    // Restore selection
                     if (selectedAnswers.contains(answer)) {
                         rb.setSelected(true);
                     }
 
-                    // Listener to update userAnswers
                     rb.selectedProperty().addListener((obs, wasSelected, isSelected) -> {
                         if (isSelected) {
                             List<Answer> currentSelection = new ArrayList<>();
@@ -222,12 +209,10 @@ public class App extends Application {
                 }
             }
 
-            // Update progress bar: current index / total questions
             double progress = (double) index / questions.size();
             progressBar.setProgress(progress);
             progressLabel.setText(String.format("%.0f%%", progress * 100));
 
-            // Update buttons
             backButton.setDisable(index == 0);
 
             if (index == questions.size() - 1) {
@@ -243,7 +228,6 @@ public class App extends Application {
             currentQuestionIndex++;
             showQuestion(currentQuestionIndex);
         } else {
-            // End of quiz
             finishQuiz();
         }
     }
@@ -275,7 +259,6 @@ public class App extends Application {
         progressBar.setProgress(1.0);
         progressLabel.setText("100%");
 
-        // Add Return to Main Menu button
         Button returnButton = new Button("Return to Main Menu");
         returnButton.setStyle("-fx-font-size: 14px; -fx-padding: 10px 20px;");
         returnButton.setOnAction(e -> showWelcomeScreen());

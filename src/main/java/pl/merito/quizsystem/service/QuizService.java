@@ -36,7 +36,6 @@ public class QuizService implements IQuizService {
                     .filter(Answer::isCorrect)
                     .collect(Collectors.toList());
 
-            // Strict scoring: User must select ALL correct answers and NO incorrect answers
             if (userSelection.size() == correctAnswers.size() && userSelection.containsAll(correctAnswers)) {
                 score++;
             }
