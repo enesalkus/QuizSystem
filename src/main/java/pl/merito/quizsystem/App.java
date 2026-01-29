@@ -19,19 +19,23 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ConfigurableApplicationContext;
 import pl.merito.quizsystem.interfaces.IQuizService;
 import pl.merito.quizsystem.model.Answer;
 import pl.merito.quizsystem.model.Question;
-import pl.merito.quizsystem.service.QuizService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@SpringBootApplication
 public class App extends Application {
 
-    private final IQuizService quizService;
+    private ConfigurableApplicationContext springContext;
+    private IQuizService quizService;
     private List<Question> questions;
     private int currentQuestionIndex = 0;
     private Stage primaryStage;
@@ -45,8 +49,15 @@ public class App extends Application {
 
     private Map<Question, List<Answer>> userAnswers = new HashMap<>();
 
-    public App() {
-        this.quizService = new QuizService();
+    @Override
+    public void init() {
+        springContext = SpringApplication.run(App.class);
+        quizService = springContext.getBean(IQuizService.class);
+    }
+
+    @Override
+    public void stop() {
+        springContext.close();
     }
 
     @Override

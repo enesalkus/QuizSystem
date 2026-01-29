@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Admin Panel - Quiz System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .btn {
+            padding: 8px 12px;
+            text-decoration: none;
+            border-radius: 4px;
+            color: white;
+            margin-right: 5px;
+        }
+
+        .btn-add {
+            background-color: #28a745;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        .btn-edit {
+            background-color: #007bff;
+        }
+
+        .btn-delete {
+            background-color: #dc3545;
+        }
+
+        .btn-home {
+            background-color: #6c757d;
+            float: right;
+        }
+    </style>
+</head>
+
+<body>
+    <a href="/" class="btn btn-home">Back to Home</a>
+    <h1>Admin Panel: Manage Questions</h1>
+
+    <a href="/admin/new" class="btn btn-add">+ Add New Question</a>
+
+    <form action="/admin/import" method="post" style="display: inline-block; margin-left: 10px;">
+        <button type="submit" class="btn"
+            style="background-color: #17a2b8; border: none; padding: 10px 15px; cursor: pointer;">Import External
+            Questions</button>
+    </form>
+
+    <p th:if="${param.message}" style="color: green; font-weight: bold; margin-bottom: 20px;">
+        <span th:text="${param.message}"></span>
+    </p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Question Text</th>
+                <th>Answers</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="question : ${questions}">
+                <td th:text="${question.id}">1</td>
+                <td th:text="${question.text}">Question?</td>
+                <td>
+                    <ul style="margin: 0; padding-left: 20px;">
+                        <li th:each="a : ${question.answers}">
+                            <span th:text="${a.text}">Ans</span>
+                            <span th:if="${a.correct}" style="color: green; font-weight: bold;">(Correct)</span>
+                        </li>
+                    </ul>
+                </td>
+                <td>
+                    <a th:href="@{/admin/edit/{id}(id=${question.id})}" class="btn btn-edit">Edit</a>
+                    <a th:href="@{/admin/delete/{id}(id=${question.id})}" class="btn btn-delete"
+                        onclick="return confirm('Are you sure?')">Delete</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+
+</html>
