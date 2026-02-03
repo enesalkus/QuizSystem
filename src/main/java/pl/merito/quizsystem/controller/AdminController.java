@@ -35,7 +35,6 @@ public class AdminController {
     @GetMapping("/new")
     public String showCreateForm(Model model) {
         Question q = new Question();
-        // Initialize 4 empty answers
         List<Answer> answers = new ArrayList<>();
         for (int i = 0; i < 4; i++) {
             answers.add(new Answer());
@@ -51,7 +50,6 @@ public class AdminController {
         if (q == null)
             return "redirect:/admin";
 
-        // Ensure at least 4 answers structure for the form if it has less
         if (q.getAnswers() == null)
             q.setAnswers(new ArrayList<>());
         while (q.getAnswers().size() < 4) {

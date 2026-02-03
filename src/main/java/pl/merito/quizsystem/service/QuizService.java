@@ -56,7 +56,6 @@ public class QuizService implements IQuizService {
     public java.util.concurrent.CompletableFuture<Void> importQuestionsAsync() {
         return java.util.concurrent.CompletableFuture.supplyAsync(() -> {
             ExternalQuestionProvider provider = new ExternalQuestionProvider();
-            // In a real app we would inject this, but for simplicity/demo:
             return provider.fetchExternalQuestions();
         }).thenAccept(questions -> {
             if (questions != null) {
